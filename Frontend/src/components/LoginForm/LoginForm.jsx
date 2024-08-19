@@ -8,19 +8,20 @@ import { Label } from "../ui/label";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const LoginForm = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState(""); // State for email input
+    const [password, setPassword] = useState(""); // State for password input
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook for navigation
 
     useEffect(() => {
+        // Redirect to home if the user is already logged in
         if (localStorage.getItem("token")) {
             navigate("/");
         }
     }, [navigate]);
 
     const handleLogin = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent the default form submission
 
         const body = {
             email,
@@ -28,16 +29,17 @@ const LoginForm = () => {
         };
 
         try {
+            // Send login request to the server
             const response = await axios.post(API_URL + "/auth/login", body);
             localStorage.setItem("token", response.data.token);
-            navigate("/");
+            navigate("/"); // Redirect to home
         } catch (error) {
-            alert(error.message);
+            alert(error.message); // Show an alert if there is an error
         }
     };
 
     const noAccount = () => {
-        navigate("/register");
+        navigate("/register"); // Redirect to register page
     };
 
     return (

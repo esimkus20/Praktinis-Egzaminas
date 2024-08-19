@@ -10,21 +10,25 @@ import {
 } from "../ui/table";
 
 const PeopleContainer = ({ people, refetchData }) => {
+    // State for sorting configuration
     const [sortConfig, setSortConfig] = useState({
         key: null,
         direction: "asc",
     });
 
+    // Sort people based on the current sort configuration
     const sortedPeople = [...people].sort((a, b) => {
         if (sortConfig.key) {
             let aValue = a[sortConfig.key];
             let bValue = b[sortConfig.key];
 
+            // Convert dateOfBirth to age for sorting
             if (sortConfig.key === "dateOfBirth") {
                 aValue = calculateAge(aValue);
                 bValue = calculateAge(bValue);
             }
 
+            // Compare values based on sort direction
             if (aValue < bValue) {
                 return sortConfig.direction === "asc" ? -1 : 1;
             }
@@ -35,6 +39,7 @@ const PeopleContainer = ({ people, refetchData }) => {
         return 0;
     });
 
+    // Function to request sorting by a specific key
     const requestSort = (key) => {
         let direction = "asc";
         if (sortConfig.key === key && sortConfig.direction === "asc") {

@@ -11,25 +11,30 @@ const API_URL = import.meta.env.VITE_API_URL;
 const Main = () => {
     const navigate = useNavigate();
 
-    const [people, setPeople] = useState([]);
+    const [people, setPeople] = useState([]); // State to store the list of people
 
+    // Function to fetch people from the API
     const getPeople = async () => {
         await axios
             .get(API_URL + "/users")
-            .then((response) => setPeople(response.data))
-            .catch((error) => alert(error.message));
+            .then((response) => setPeople(response.data)) // Set the fetched people to state
+            .catch((error) => alert(error.message)); // Handle any errors
     };
 
+    // Fetch people when the component mounts
     useEffect(() => {
         getPeople();
     }, []);
 
+    // Check for token and validate admin when the component mounts
     useEffect(() => {
         const token = localStorage.getItem("token");
 
         if (!token) {
+            // If no token, navigate to login page
             navigate("/login");
         } else {
+            // Validate the token with the server
             axios
                 .get(API_URL + "/auth/admins", {
                     headers: {
@@ -40,23 +45,26 @@ const Main = () => {
                 })
                 .catch((error) => {
                     if (error.response.status === 401) {
+                        // If token is invalid, remove it and navigate to login page
                         localStorage.removeItem("token");
                         navigate("/login");
                     } else {
-                        alert("Something went wrong!");
+                        alert("Something went wrong!"); // Handle other errors
                     }
                 });
         }
     }, []);
 
+    // Handle form submission to add a new person
     const handleSubmit = async (body) => {
-        await axios.post(API_URL + "/users", body);
-        getPeople();
+        await axios.post(API_URL + "/users", body); // Post new person data to the API
+        getPeople(); // Refetch the people list
     };
 
+    // Handle logout
     const logout = () => {
-        localStorage.removeItem("token");
-        navigate("/login");
+        localStorage.removeItem("token"); // Remove token from local storage
+        navigate("/login"); // Navigate to login page
     };
 
     return (

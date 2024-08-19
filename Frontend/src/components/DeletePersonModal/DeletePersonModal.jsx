@@ -4,25 +4,27 @@ import reactDom from "react-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const DeletePersonModal = ({ personData, refetchData, cancel }) => {
+    // Function to delete a person
     const deletePerson = async () => {
         try {
             await axios.delete(API_URL + `/users/${personData._id}`);
-            refetchData();
+            refetchData(); // Refetch the data to update the list
         } catch (error) {
-            alert(error.message);
+            alert(error.message); // If there is an error, show an alert
         }
     };
 
+    // Handle click on the background to close the modal
     const handleBackgroundClick = (e) => {
         if (e.target === e.currentTarget) {
-            cancel();
+            cancel(); // Call the cancel function to close the modal
         }
     };
 
     return reactDom.createPortal(
         <div
             className="w-full h-full bg-black/50 absolute top-0 flex items-center justify-center"
-            onClick={handleBackgroundClick}
+            onClick={handleBackgroundClick} // Close the modal when the background is clicked
         >
             <div className="absolute top-72 flex items-center justify-center bg-white rounded-xl px-5">
                 <div className="p-4">

@@ -2,9 +2,11 @@ import axios from "axios";
 import reactDom from "react-dom";
 import NewPersonForm from "../NewPersonForm/NewPersonForm";
 
+// API URL from environment variables
 const API_URL = import.meta.env.VITE_API_URL;
 
 const UpdatePersonModal = ({ personData, refetchData, cancel }) => {
+    // Function to get fields that have changed
     const getChangedFields = (newData, oldData) => {
         return Object.keys(newData).reduce((acc, key) => {
             if (newData[key] !== oldData[key]) {
@@ -14,6 +16,7 @@ const UpdatePersonModal = ({ personData, refetchData, cancel }) => {
         }, {});
     };
 
+    // Function to update person data
     const updatePerson = async (body) => {
         try {
             const changedFields = getChangedFields(body, personData);
@@ -21,13 +24,14 @@ const UpdatePersonModal = ({ personData, refetchData, cancel }) => {
                 API_URL + `/users/${personData._id}`,
                 changedFields
             );
-            refetchData();
-            cancel();
+            refetchData(); // Refresh data after update
+            cancel(); // Close the modal
         } catch (error) {
             alert(error.message);
         }
     };
 
+    // Handle click outside the modal to close it
     const handleBackgroundClick = (e) => {
         if (e.target === e.currentTarget) {
             cancel();

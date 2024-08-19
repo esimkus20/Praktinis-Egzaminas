@@ -6,16 +6,20 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
+// API URL from environment variables
 const API_URL = import.meta.env.VITE_API_URL;
 
 const RegisterForm = () => {
+    // State hooks for form fields and registration status
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isRegistered, setIsRegistered] = useState(false);
 
+    // Hook for navigation
     const navigate = useNavigate();
 
+    // Handle form submission for registration
     const handleRegister = async (e) => {
         e.preventDefault();
 
@@ -24,16 +28,20 @@ const RegisterForm = () => {
             email,
             password,
         };
+
         try {
+            // Send registration data to the API
             await axios.post(API_URL + "/auth/register", body);
             setIsRegistered(true);
 
+            // Redirect to login page after 3 seconds
             setTimeout(() => navigate("/login"), 3000);
         } catch (error) {
             alert(error.message);
         }
     };
 
+    // Navigate to login page
     const haveAcoount = () => {
         navigate("/login");
     };

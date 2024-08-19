@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 const NewPersonForm = ({ onSubmit, personData }) => {
+    // State hooks for form inputs
     const [name, setName] = useState(personData?.name || "");
     const [surname, setSurname] = useState(personData?.surname || "");
     const [email, setEmail] = useState(personData?.email || "");
@@ -11,6 +12,7 @@ const NewPersonForm = ({ onSubmit, personData }) => {
         personData?.dateOfBirth || ""
     );
 
+    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -22,6 +24,7 @@ const NewPersonForm = ({ onSubmit, personData }) => {
         };
 
         try {
+            // Call the onSubmit function passed as a prop
             onSubmit(body);
         } catch (error) {
             alert(error.message);

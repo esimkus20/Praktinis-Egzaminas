@@ -6,6 +6,7 @@ import UpdatePersonModal from "../UpdatePersonModal/UpdatePersonModal";
 import { Button } from "../ui/button";
 import { TableCell, TableRow } from "../ui/table";
 
+// Helper function to calculate age from date of birth
 const calculateAge = (dateOfBirth) => {
     const dob = new Date(dateOfBirth);
     const diffMs = Date.now() - dob.getTime();
@@ -14,8 +15,10 @@ const calculateAge = (dateOfBirth) => {
 };
 
 const Person = ({ personData, refetchData }) => {
+    // State to control the visibility of the update modal
     const [showUpdateModal, setShowUpdateModal] = useState(false);
 
+    // State to control the visibility of the delete modal
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     return (
@@ -28,7 +31,7 @@ const Person = ({ personData, refetchData }) => {
                 <TableCell>
                     <Button
                         className="px-3 bg-slate-800 opacity-80 hover:bg-slate-950"
-                        onClick={setShowUpdateModal}
+                        onClick={() => setShowUpdateModal(true)}
                     >
                         <FontAwesomeIcon icon={faEdit} />
                     </Button>
@@ -36,7 +39,7 @@ const Person = ({ personData, refetchData }) => {
                 <TableCell>
                     <Button
                         className="px-3 bg-red-900 opacity-95 hover:bg-red-950"
-                        onClick={setShowDeleteModal}
+                        onClick={() => setShowDeleteModal(true)}
                     >
                         <FontAwesomeIcon icon={faTrash} />
                     </Button>
